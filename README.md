@@ -1,1 +1,2 @@
 # projektDD1349
+The Game är ett kortspel med korten 1-99 där spelaren försöker spela alla kort i två högar (en stigande och en fallande). Spelet fungerar så att man varje tur behöver lägga två kort från sin hand på någon av de två högarna: Den ena högen ska byggas uppåt (från 1 till 99). Den andra högen ska byggas nedåt (från 99 till 1). Det går att “vända riktningen” lite genom att spela ett kort som är exakt 10 steg från senaste kortet i högen Spelet vinns om alla kort spelas ut
