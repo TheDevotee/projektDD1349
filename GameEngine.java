@@ -43,3 +43,19 @@ public class GameEngine {
 
         return MoveResult.SUCCESS;
     }
+
+    /**
+     * Ends the current turn by drawing cards from the deck
+     * until the player's hand is full or the deck is empty.
+     * The hand size is capped at 6 cards.
+     */
+    public void endTurn() {
+        Player player = state.getPlayer();
+        Deck deck = state.getDeck();
+
+        while (player.getHandSize() < 6 && !deck.isEmpty()) {
+            player.addCard(deck.draw());
+        }
+    }
+
+}
