@@ -58,4 +58,34 @@ public class GameEngine {
         }
     }
 
+    // Checks if game is lost/won is checked after every card played
+    
+    /**
+     * Checks whether the game is over.
+     * The game is over when no card in the player's hand can be legally placed on any pile.
+     *
+     * @return {@code true} if no valid moves remain, {@code false} otherwise
+     */
+    public boolean isGameOver() {
+        Player player = state.getPlayer();
+        for (Card card : player.getHand()) {
+            for (Pile pile : state.getPiles()) {
+                if (validator.validate(card, pile)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Checks whether the game has been won.
+     * The game is won when the deck is empty and the player has no cards left in hand.
+     *
+     * @return {@code true} if the player has won, {@code false} otherwise
+     */
+    public boolean isGameWon() {
+        return state.getDeck().isEmpty()
+            && state.getPlayer().getHandSize() == 0;
+    }
 }
