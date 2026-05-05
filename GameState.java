@@ -13,7 +13,7 @@ public class GameState {
      *
      * @param player the solo player
      * @param deck   the draw pile
-     * @param piles  the four piles (2 ascending, 2 descending)
+     * @param piles  the four piles (2 up, 2 down)
      */
     public GameState(Player player, Deck deck, Pile[] piles) {
         this.player = player;
@@ -40,7 +40,7 @@ public class GameState {
     }
 
     /**
-     * Returns the four piles.
+     * Returns all four piles.
      *
      * @return array of piles
      */
