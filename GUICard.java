@@ -30,10 +30,10 @@ public class GUICard extends JPanel {
         setLayout(null);
         this.card = card;
 
+        Font font = new Font("Arial", 0, FONT_SIZE);
         JLabel valueLabel = new JLabel();
         valueLabel.setBounds(0, 0, WIDTH, HEIGHT);
         valueLabel.setText(String.valueOf(card.getValue()));
-        Font font = new Font("Times New Roman", 0, FONT_SIZE);
         valueLabel.setFont(font);
         valueLabel.setHorizontalAlignment(SwingConstants.CENTER);
         add(valueLabel);

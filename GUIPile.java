@@ -32,22 +32,32 @@ public class GUIPile extends JPanel {
         setLayout(null);
         this.pile = pile;
 
-        ImageIcon cardIcon = new ImageIcon(getClass().getClassLoader().getResource("card.png"));
-        JLabel bottomImage = new JLabel();
-        bottomImage.setBounds(0, 0, WIDTH, HEIGHT);
-        bottomImage.setIcon(cardIcon);
-        add(bottomImage);
-
+        Font font = new Font("Arial", 0, FONT_SIZE);
         topCardValueLabel = new JLabel();
         topCardValueLabel.setBounds(0, (int) (HEIGHT * 0.75), WIDTH, HEIGHT);
         topCardValueLabel.setText("");
-        Font font = new Font("Times New Roman", 0, FONT_SIZE);
         topCardValueLabel.setFont(font);
         topCardValueLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        topCardValueLabel.setVisible(false);
+        add(topCardValueLabel);
 
+        ImageIcon cardIcon = new ImageIcon(getClass().getClassLoader().getResource("card.png"));
         topCardImageLabel = new JLabel();
         topCardImageLabel.setBounds(0, (int) (HEIGHT * 0.75), WIDTH, HEIGHT);
         topCardImageLabel.setIcon(cardIcon);
+        topCardImageLabel.setVisible(false);
+        add(topCardImageLabel);
+
+        ImageIcon bottomCardIcon;
+        if (pile.getDirection() == Direction.UP) {
+            bottomCardIcon = new ImageIcon(getClass().getClassLoader().getResource("card1.png"));
+        } else {
+            bottomCardIcon = new ImageIcon(getClass().getClassLoader().getResource("card100.png"));
+        }
+        JLabel bottomImage = new JLabel();
+        bottomImage.setBounds(0, 0, WIDTH, HEIGHT);
+        bottomImage.setIcon(bottomCardIcon);
+        add(bottomImage);
     }
 
     /**
@@ -65,8 +75,8 @@ public class GUIPile extends JPanel {
     public void update() {
         Card topCard = pile.getTopCard();
         if (topCard != null) {
-            add(topCardValueLabel);
-            add(topCardImageLabel);
+            topCardValueLabel.setVisible(true);
+            topCardImageLabel.setVisible(true);
             topCardValueLabel.setText(String.valueOf(pile.getTopCard().getValue()));
         }
     }
