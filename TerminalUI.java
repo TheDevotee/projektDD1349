@@ -33,10 +33,7 @@ public class TerminalUI {
         this.scanner = new Scanner(System.in);
     }
 
-    // ─────────────────────────────────────────────
     //  Main game loop
-    // ─────────────────────────────────────────────
-
     /**
      * Starts and runs the game loop until the game ends.
      */
@@ -61,10 +58,7 @@ public class TerminalUI {
         scanner.close();
     }
 
-    // ─────────────────────────────────────────────
     //  Input handling
-    // ─────────────────────────────────────────────
-
     private MoveResult handleInput(String input) {
         String[] parts = input.trim().toLowerCase().split("\\s+");
         if (parts.length == 0 || parts[0].isEmpty()) {
@@ -83,6 +77,10 @@ public class TerminalUI {
             case "help" -> {
                 printHelp();
                 return MoveResult.SUCCESS;
+            }
+            case "rules" -> {
+            printRules();
+            return MoveResult.SUCCESS;
             }
             case "exit" -> {
                 System.out.println("Goodbye!");
@@ -140,10 +138,7 @@ public class TerminalUI {
         return result;
     }
 
-    // ─────────────────────────────────────────────
     //  Display
-    // ─────────────────────────────────────────────
-
     private void printState() {
         System.out.println();
         System.out.println("═".repeat(50));
@@ -218,8 +213,30 @@ public class TerminalUI {
         System.out.println(BOLD + "  Commands:" + RESET);
         System.out.println("  play <value> <pile>  - play a card (e.g. play 38 2)");
         System.out.println("  end                  - end your turn and draw cards");
-        System.out.println("  help                 - show this help");
+        System.out.println("  help                 - show available commands");
+        System.out.println("  rules                - show game rules");
         System.out.println("  exit                 - quit the game");
+        System.out.println();
+    }
+    private void printRules() {
+        System.out.println();
+        System.out.println(BOLD + "  THE GAME — Rules" + RESET);
+        System.out.println("  " + "─".repeat(40));
+        System.out.println(BOLD + "  Goal:" + RESET);
+        System.out.println("    Play all 98 cards onto the 4 piles.");
+        System.out.println();
+        System.out.println(BOLD + "  Piles:" + RESET);
+        System.out.println("    [1] and [2] go UP   — play higher cards");
+        System.out.println("    [3] and [4] go DOWN — play lower cards");
+        System.out.println();
+        System.out.println(BOLD + "  Jump back rule:" + RESET);
+        System.out.println("    Play a card exactly 10 steps backwards on any pile.");
+        System.out.println("    e.g. play 34 on UP pile with top [44]");
+        System.out.println();
+        System.out.println(BOLD + "  Win/Lose:" + RESET);
+        System.out.println("    Win — deck empty and no cards left in hand");
+        System.out.println("    Lose — no valid moves remaining");
+        System.out.println("  " + "─".repeat(40));
         System.out.println();
     }
 
