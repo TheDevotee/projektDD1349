@@ -156,9 +156,6 @@ public class GameGUI {
     }
 
     private void checkWinAndLoss() {
-        System.out.println(engine.isGameOver());
-        System.out.println(engine.canEndTurn());
-        System.out.println("---------------");
         if (engine.isGameWon()) {
             gameEndLabel.setText("You Won!");
             gameEndLabel.setForeground(Color.GREEN);
