@@ -141,6 +141,7 @@ public class GameGUI {
 
     private void updateHand() {
         List<Card> hand = new ArrayList<>(state.getPlayer().getHand());
+        hand.sort((a, b) -> a.getValue() - b.getValue());
         selectedGuiCard = null;
         for (int i = 0; i < 8; i++) {
             if (guiHand[i] != null) {
