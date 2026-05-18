@@ -1,21 +1,35 @@
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-        Deck deck = new Deck();
-        Player player = new Player();
+        System.out.println("Choose mode:");
+        System.out.println("1 - Terminal");
+        System.out.println("2 - GUI");
+        System.out.print("> ");
+
+        Scanner scanner = new Scanner(System.in);
+        String choice = scanner.nextLine();
+
         Pile[] piles = {
-            new Pile(Direction.UP),
-            new Pile(Direction.UP),
-            new Pile(Direction.DOWN),
-            new Pile(Direction.DOWN)
+                new Pile(Direction.UP),
+                new Pile(Direction.UP),
+                new Pile(Direction.DOWN),
+                new Pile(Direction.DOWN)
         };
 
-        // Draw initial hand (8 cards)
-        for (int i = 0; i < 8; i++) {
-            player.addCard(deck.draw());
+        GameState state = new GameState(new Player(), new Deck(), piles);
+        GameEngine engine = new GameEngine(state, new MoveValidator());
+
+        if (choice.equals("1")) {
+            new TerminalUI(engine, state).start();
+        } else if (choice.equals("2")) {
+            engine.endTurn(); // ← lägg till här
+            new GameGUI(engine, state);
+        } else {
+            System.out.println("Invalid choice.");
         }
 
-        GameState state   = new GameState(player, deck, piles);
-        GameEngine engine = new GameEngine(state, new MoveValidator());
-        new GameGUI(engine, state);
+        scanner.close();
     }
+
 }
