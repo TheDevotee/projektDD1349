@@ -9,8 +9,8 @@ public class Main {
             new Pile(Direction.DOWN)
         };
 
-        // Draw initial hand (6 cards)
-        for (int i = 0; i < 6; i++) {
+        // Draw initial hand (8 cards)
+        for (int i = 0; i < 8; i++) {
             player.addCard(deck.draw());
         }
 

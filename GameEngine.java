@@ -9,7 +9,6 @@ public class GameEngine {
 
     private final GameState state;
     private final MoveValidator validator;
-
     /**
      * Creates a new GameEngine with the given state and validator.
      *
@@ -49,13 +48,13 @@ public class GameEngine {
     /**
      * Ends the current turn by drawing cards from the deck
      * until the player's hand is full or the deck is empty.
-     * The hand size is capped at 6 cards.
+     * The hand size is capped at 8 cards.
      */
     public void endTurn() {
         Player player = state.getPlayer();
         Deck deck = state.getDeck();
 
-        while (player.getHandSize() < 6 && !deck.isEmpty()) {
+        while (player.getHandSize() < 8 && !deck.isEmpty()) {
             player.addCard(deck.draw());
         }
     }
