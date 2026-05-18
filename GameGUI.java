@@ -50,7 +50,6 @@ public class GameGUI {
     public GameGUI(GameEngine engine, GameState state) {
         this.engine = engine;
         this.state = state;
-        engine.endTurn();
 
         window = new JFrame("The Game");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -235,17 +234,5 @@ public class GameGUI {
         });
         window.add(guiPile);
         return guiPile;
-    }
-
-    public static void main(String[] args) {
-        Pile[] piles = {
-            new Pile(Direction.UP),
-            new Pile(Direction.UP),
-            new Pile(Direction.DOWN),
-            new Pile(Direction.DOWN)
-        };
-        GameState state = new GameState(new Player(), new Deck(), piles);
-        GameEngine engine = new GameEngine(state, new MoveValidator());
-        new GameGUI(engine, state);
     }
 }
