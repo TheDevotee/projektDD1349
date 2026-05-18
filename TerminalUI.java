@@ -10,16 +10,16 @@ import java.util.Scanner;
 public class TerminalUI {
 
     // ANSI color codes
-    private static final String RESET  = "\u001B[0m";
-    private static final String GREEN  = "\u001B[32m";
-    private static final String RED    = "\u001B[31m";
+    private static final String RESET = "\u001B[0m";
+    private static final String GREEN = "\u001B[32m";
+    private static final String RED = "\u001B[31m";
     private static final String YELLOW = "\u001B[33m";
-    private static final String CYAN   = "\u001B[36m";
-    private static final String BOLD   = "\u001B[1m";
+    private static final String CYAN = "\u001B[36m";
+    private static final String BOLD = "\u001B[1m";
 
     private final GameEngine engine;
-    private final GameState  state;
-    private final Scanner    scanner;
+    private final GameState state;
+    private final Scanner scanner;
 
     /**
      * Creates a new TerminalUI with the given engine and state.
@@ -28,12 +28,12 @@ public class TerminalUI {
      * @param state  the current game state
      */
     public TerminalUI(GameEngine engine, GameState state) {
-        this.engine  = engine;
-        this.state   = state;
+        this.engine = engine;
+        this.state = state;
         this.scanner = new Scanner(System.in);
     }
 
-    //  Main game loop
+    // Main game loop
     /**
      * Starts and runs the game loop until the game ends.
      */
@@ -58,18 +58,21 @@ public class TerminalUI {
         scanner.close();
     }
 
-    //  Input handling
+    // Input handling
     private MoveResult handleInput(String input) {
         String[] parts = input.trim().toLowerCase().split("\\s+");
         if (parts.length == 0 || parts[0].isEmpty()) {
             return MoveResult.SUCCESS;
         }
-
         switch (parts[0]) {
             case "play" -> {
                 return handlePlay(parts);
             }
             case "end" -> {
+                if (!engine.canEndTurn()) {
+                    System.out.println(YELLOW + "You must play at least 2 cards before ending your turn." + RESET);
+                    return MoveResult.SUCCESS;
+                }
                 engine.endTurn();
                 System.out.println(CYAN + "Turn ended. Cards drawn." + RESET);
                 return MoveResult.SUCCESS;
@@ -79,8 +82,8 @@ public class TerminalUI {
                 return MoveResult.SUCCESS;
             }
             case "rules" -> {
-            printRules();
-            return MoveResult.SUCCESS;
+                printRules();
+                return MoveResult.SUCCESS;
             }
             case "exit" -> {
                 System.out.println("Goodbye!");
@@ -99,8 +102,8 @@ public class TerminalUI {
 
         int cardValue, pileIndex;
         try {
-            cardValue  = Integer.parseInt(parts[1]);
-            pileIndex  = Integer.parseInt(parts[2]) - 1; // 1-based → 0-based
+            cardValue = Integer.parseInt(parts[1]);
+            pileIndex = Integer.parseInt(parts[2]) - 1; // 1-based → 0-based
         } catch (NumberFormatException e) {
             System.out.println(YELLOW + "Invalid input. Usage: play <card value> <pile number 1-4>" + RESET);
             return MoveResult.SUCCESS;
@@ -138,7 +141,7 @@ public class TerminalUI {
         return result;
     }
 
-    //  Display
+    // Display
     private void printState() {
         System.out.println();
         System.out.println("═".repeat(50));
@@ -158,17 +161,17 @@ public class TerminalUI {
 
         for (int i = 0; i < piles.length; i++) {
             Pile pile = piles[i];
-            String dir      = pile.getDirection() == Direction.UP ? GREEN + "↑ UP  " + RESET
-                                                                   : RED   + "↓ DOWN" + RESET;
-            String topCard  = formatTopCard(pile);
+            String dir = pile.getDirection() == Direction.UP ? GREEN + "↑ UP  " + RESET
+                    : RED + "↓ DOWN" + RESET;
+            String topCard = formatTopCard(pile);
             System.out.printf("  [%d] %s  top: %s%n", i + 1, dir, topCard);
         }
     }
 
     private String formatTopCard(Pile pile) {
         int val = pile.getTopCard().getValue();
-        boolean isStart = (pile.getDirection() == Direction.UP   && val == 1)
-                       || (pile.getDirection() == Direction.DOWN && val == 100);
+        boolean isStart = (pile.getDirection() == Direction.UP && val == 1)
+                || (pile.getDirection() == Direction.DOWN && val == 100);
         if (isStart) {
             return CYAN + BOLD + "[" + val + "]" + RESET;
         }
@@ -218,6 +221,7 @@ public class TerminalUI {
         System.out.println("  exit                 - quit the game");
         System.out.println();
     }
+
     private void printRules() {
         System.out.println();
         System.out.println(BOLD + "  THE GAME — Rules" + RESET);
