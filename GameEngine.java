@@ -1,5 +1,4 @@
 
-
 /**
  * The game engine that ties all components together.
  * Handles turn logic, card drawing and win/loss conditions.
@@ -9,6 +8,7 @@ public class GameEngine {
 
     private final GameState state;
     private final MoveValidator validator;
+    private int cardsPlayedThisTurn = 0;
 
     /**
      * Creates a new GameEngine with the given state and validator.
@@ -28,10 +28,10 @@ public class GameEngine {
      *
      * @param card the card to play
      * @param pile the pile to play the card onto
-     * @return {@code MoveResult.INVALID}  if the move breaks the rules,
+     * @return {@code MoveResult.INVALID} if the move breaks the rules,
      *         {@code MoveResult.GAME_WON} if the player has won,
      *         {@code MoveResult.GAME_OVER} if no valid moves remain,
-     *         {@code MoveResult.SUCCESS}  if the move was successful
+     *         {@code MoveResult.SUCCESS} if the move was successful
      */
     public MoveResult playCard(Card card, Pile pile) {
         if (!validator.validate(card, pile)) {
@@ -39,9 +39,12 @@ public class GameEngine {
         }
         pile.place(card);
         state.getPlayer().removeCard(card);
+        cardsPlayedThisTurn++;
 
-        if (isGameWon()) return MoveResult.GAME_WON;
-        if (isGameOver()) return MoveResult.GAME_OVER;
+        if (isGameWon())
+            return MoveResult.GAME_WON;
+        if (isGameOver())
+            return MoveResult.GAME_OVER;
 
         return MoveResult.SUCCESS;
     }
@@ -49,22 +52,29 @@ public class GameEngine {
     /**
      * Ends the current turn by drawing cards from the deck
      * until the player's hand is full or the deck is empty.
-     * The hand size is capped at 6 cards.
+     * The hand size is capped at 8 cards.
      */
     public void endTurn() {
         Player player = state.getPlayer();
         Deck deck = state.getDeck();
 
-        while (player.getHandSize() < 6 && !deck.isEmpty()) {
+        while (player.getHandSize() < 8 && !deck.isEmpty()) {
             player.addCard(deck.draw());
         }
+        cardsPlayedThisTurn = 0; // Reset counter
+    }
+
+    // Allows TerminalUI to check that at least 2 cards have been played
+    public boolean canEndTurn() {
+        return cardsPlayedThisTurn >= 2;
     }
 
     // Checks if game is lost/won is checked after every card played
-    
+
     /**
      * Checks whether the game is over.
-     * The game is over when no card in the player's hand can be legally placed on any pile.
+     * The game is over when no card in the player's hand can be legally placed on
+     * any pile.
      *
      * @return {@code true} if no valid moves remain, {@code false} otherwise
      */
@@ -82,12 +92,13 @@ public class GameEngine {
 
     /**
      * Checks whether the game has been won.
-     * The game is won when the deck is empty and the player has no cards left in hand.
+     * The game is won when the deck is empty and the player has no cards left in
+     * hand.
      *
      * @return {@code true} if the player has won, {@code false} otherwise
      */
     public boolean isGameWon() {
         return state.getDeck().isEmpty()
-            && state.getPlayer().getHandSize() == 0;
+                && state.getPlayer().getHandSize() == 0;
     }
 }
