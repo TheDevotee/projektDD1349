@@ -1,3 +1,4 @@
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -35,8 +36,10 @@ public class GameGUI {
     private GUICard selectedGuiCard;
     private GUICard[] guiHand;
     private JButton endTurnButton;
+    private JButton rulesButton;
     private JLabel deckLabel;
     private JLabel gameEndLabel;
+    private JPanel rulesPanel;
 
     /**
      * Creates a new GameGUI with the given engine and state.
@@ -56,12 +59,8 @@ public class GameGUI {
         window.getContentPane().setBackground(backgroundColor);
         window.setLayout(null);
 
-        gameEndLabel = new JLabel("");
-        gameEndLabel.setBounds(0, 0, 1140, 720);
-        gameEndLabel.setFont(new Font("Arial", 0, 100));
-        gameEndLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        gameEndLabel.setVisible(false);
-        window.add(gameEndLabel);
+        createGameEndLabel();
+        createRulesPanel();
 
         cardIcon = new ImageIcon(getClass().getClassLoader().getResource("card.png"));
         selectedCardIcon = new ImageIcon(getClass().getClassLoader().getResource("selected_card.png"));
@@ -74,8 +73,17 @@ public class GameGUI {
         guiHand = new GUICard[8];
         updateHand();
 
+        createEndTurnButton();
+        updateEndTurnButton();
+        createRulesButton();
+        createDeckLabel();
+
+        window.setVisible(true);
+    }
+
+    private void createEndTurnButton() {
         endTurnButton = new JButton("End Turn");
-        endTurnButton.setBounds(800, 200, 260, 100);
+        endTurnButton.setBounds(800, 310, 260, 100);
         endTurnButton.setFont(font);
         endTurnButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -83,19 +91,64 @@ public class GameGUI {
                     engine.endTurn();
                     checkWinAndLoss();
                     updateHand();
+                    updateEndTurnButton();
                     updateDeckLabel();
                 }
             }
         });
         window.add(endTurnButton);
+    }
 
+    private void createRulesButton() {
+        rulesButton = new JButton("Read Rules");
+        rulesButton.setBounds(800, 200, 260, 100);
+        rulesButton.setFont(font);
+        rulesButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                rulesPanel.setVisible(!rulesPanel.isVisible());
+            }
+        });
+        window.add(rulesButton);
+    }
+
+    private void createDeckLabel() {
         deckLabel = new JLabel("Cards in deck: " + String.valueOf(state.getDeck().size()));
         deckLabel.setBounds(800, 100, 400, 100);
         deckLabel.setFont(font);
         deckLabel.setForeground(Color.WHITE);
         window.add(deckLabel);
+    }
 
-        window.setVisible(true);
+    private void createGameEndLabel() {
+        gameEndLabel = new JLabel("");
+        gameEndLabel.setBounds(0, 0, 1140, 720);
+        gameEndLabel.setFont(new Font("Arial", 0, 100));
+        gameEndLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        gameEndLabel.setVisible(false);
+        window.add(gameEndLabel);
+    }
+
+    private void createRulesPanel() {
+        rulesPanel = new JPanel();
+        rulesPanel.setBounds(100, 100, 600, 500);
+        rulesPanel.setBackground(Color.WHITE);
+        rulesPanel.setLayout(null);
+        rulesPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+        StringBuilder rulesString = new StringBuilder();
+        rulesString.append("<html><B>Goal:</B><br>Play all 98 cards onto the 4 piles.");
+        rulesString.append("<br><B>Piles:</B><br>Play higher cards on the left piles and lower cards on the right piles.");
+        rulesString.append("<br><B>Jump back rule</B>:<br>You can play a card exactly 10 steps backwards on any pile.");
+        rulesString.append("<br><B>Turns:</B>:<br>You must play at least 2 cards every turn.");
+        rulesString.append("<br><B>Win/lose:</B>:<br>You win when you have no more cards in the deck or your hand. You lose if you cannot play any of your cards.");
+        rulesString.append("</html>");
+        JLabel rulesLabel = new JLabel(rulesString.toString());
+        rulesLabel.setBounds(10, 40, 590, 590);
+        rulesLabel.setFont(new Font("Arial", 0, 25));
+        rulesLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        rulesLabel.setVerticalAlignment(SwingConstants.TOP);
+        rulesPanel.add(rulesLabel);
+        rulesPanel.setVisible(false);
+        window.add(rulesPanel);
     }
 
     private void updateDeckLabel() {
@@ -103,14 +156,18 @@ public class GameGUI {
     }
 
     private void checkWinAndLoss() {
+        System.out.println(engine.isGameOver());
+        System.out.println(engine.canEndTurn());
+        System.out.println("---------------");
         if (engine.isGameWon()) {
             gameEndLabel.setText("You Won!");
             gameEndLabel.setForeground(Color.GREEN);
             gameEndLabel.setVisible(true);
-        } else if (engine.isGameOver()) {
+        } else if (engine.isGameOver() && !engine.canEndTurn()) {
             gameEndLabel.setText("You Lost!");
             gameEndLabel.setForeground(Color.RED);
             gameEndLabel.setVisible(true);
+            endTurnButton.setVisible(false);
         }
     }
 
@@ -158,6 +215,10 @@ public class GameGUI {
         window.repaint();
     }
 
+    private void updateEndTurnButton() {
+        endTurnButton.setEnabled(engine.canEndTurn());
+    }
+
     private GUIPile createGuiPile(int x, int y, Pile pile) {
         GUIPile guiPile = new GUIPile(x, y, pile);
         guiPile.addMouseListener(new MouseListener() {
@@ -165,7 +226,9 @@ public class GameGUI {
                 if (selectedGuiCard != null) {
                     engine.playCard(selectedGuiCard.getCard(), pile);
                     updateHand();
+                    updateEndTurnButton();
                     guiPile.update();
+                    checkWinAndLoss();
                 }
             }
             public void mouseEntered(MouseEvent e) {}
