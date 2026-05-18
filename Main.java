@@ -16,6 +16,6 @@ public class Main {
 
         GameState state   = new GameState(player, deck, piles);
         GameEngine engine = new GameEngine(state, new MoveValidator());
-        new TerminalUI(engine, state).start();
+        new GameGUI(engine, state);
     }
 }
