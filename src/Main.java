@@ -1,3 +1,4 @@
+package src;
 import java.util.Scanner;
 
 public class Main {
@@ -23,7 +24,7 @@ public class Main {
         if (choice.equals("1")) {
             new TerminalUI(engine, state).start();
         } else if (choice.equals("2")) {
-            engine.endTurn(); // ← lägg till här
+            engine.endTurn(); 
             new GameGUI(engine, state);
         } else {
             System.out.println("Invalid choice.");

@@ -1,3 +1,4 @@
+package src;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -61,8 +62,8 @@ public class GameGUI {
         createGameEndLabel();
         createRulesPanel();
 
-        cardIcon = new ImageIcon(getClass().getClassLoader().getResource("card.png"));
-        selectedCardIcon = new ImageIcon(getClass().getClassLoader().getResource("selected_card.png"));
+        cardIcon = new ImageIcon(getClass().getClassLoader().getResource("src/card.png"));
+        selectedCardIcon = new ImageIcon(getClass().getClassLoader().getResource("src/selected_card.png"));
 
         createGuiPile(200, 50, state.getPile(0));
         createGuiPile(300, 50, state.getPile(1));

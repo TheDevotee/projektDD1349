@@ -1,3 +1,4 @@
+package src;
 /**
  * Represents the current state of the game.
  * Holds the player, the deck and the four piles.

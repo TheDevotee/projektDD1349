@@ -1,3 +1,4 @@
+package src;
 import java.awt.Font;
 
 import javax.swing.ImageIcon;
@@ -38,7 +39,7 @@ public class GUICard extends JPanel {
         valueLabel.setHorizontalAlignment(SwingConstants.CENTER);
         add(valueLabel);
         
-        ImageIcon cardIcon = new ImageIcon(getClass().getClassLoader().getResource("card.png"));
+        ImageIcon cardIcon = new ImageIcon(getClass().getClassLoader().getResource("src/card.png"));
         JLabel imageLabel = new JLabel();
         imageLabel.setBounds(0, 0, WIDTH, HEIGHT);
         imageLabel.setIcon(cardIcon);

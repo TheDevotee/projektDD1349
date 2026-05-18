@@ -1,3 +1,4 @@
+package src;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.ImageIcon;
@@ -41,7 +42,7 @@ public class GUIPile extends JPanel {
         topCardValueLabel.setVisible(false);
         add(topCardValueLabel);
 
-        ImageIcon cardIcon = new ImageIcon(getClass().getClassLoader().getResource("card.png"));
+        ImageIcon cardIcon = new ImageIcon(getClass().getClassLoader().getResource("src/card.png"));
         topCardImageLabel = new JLabel();
         topCardImageLabel.setBounds(0, (int) (HEIGHT * 0.75), WIDTH, HEIGHT);
         topCardImageLabel.setIcon(cardIcon);
@@ -50,9 +51,9 @@ public class GUIPile extends JPanel {
 
         ImageIcon bottomCardIcon;
         if (pile.getDirection() == Direction.UP) {
-            bottomCardIcon = new ImageIcon(getClass().getClassLoader().getResource("card1.png"));
+            bottomCardIcon = new ImageIcon(getClass().getClassLoader().getResource("src/card1.png"));
         } else {
-            bottomCardIcon = new ImageIcon(getClass().getClassLoader().getResource("card100.png"));
+            bottomCardIcon = new ImageIcon(getClass().getClassLoader().getResource("src/card100.png"));
         }
         JLabel bottomImage = new JLabel();
         bottomImage.setBounds(0, 0, WIDTH, HEIGHT);
