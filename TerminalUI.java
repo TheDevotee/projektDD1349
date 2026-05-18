@@ -237,6 +237,9 @@ public class TerminalUI {
         System.out.println("    Play a card exactly 10 steps backwards on any pile.");
         System.out.println("    e.g. play 34 on UP pile with top [44]");
         System.out.println();
+        System.out.println(BOLD + "  Turns:" + RESET);
+        System.out.println("    You must play at least 2 cards before ending your turn.");
+        System.out.println();
         System.out.println(BOLD + "  Win/Lose:" + RESET);
         System.out.println("    Win — deck empty and no cards left in hand");
         System.out.println("    Lose — no valid moves remaining");
