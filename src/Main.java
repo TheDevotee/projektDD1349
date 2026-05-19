@@ -20,11 +20,11 @@ public class Main {
 
         GameState state = new GameState(new Player(), new Deck(), piles);
         GameEngine engine = new GameEngine(state, new MoveValidator());
+        engine.endTurn();
 
         if (choice.equals("1")) {
             new TerminalUI(engine, state).start();
-        } else if (choice.equals("2")) {
-            engine.endTurn(); 
+        } else if (choice.equals("2")) { 
             new GameGUI(engine, state);
         } else {
             System.out.println("Invalid choice.");
